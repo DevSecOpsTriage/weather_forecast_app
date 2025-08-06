@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+    <title>5-Day Forecast</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: white;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            border: 1px solid #ddd;
+        }
+        td {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .temperature {
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .precipitation {
+            color: #3498db;
+        }
+        .sunshine {
+            color: #f39c12;
+        }
+        .notes {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        .back-link:hover {
+            background-color: #45a049;
+        }
+        .city-info {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>5-Day Weather Forecast</h1>
+        
+        <div class="city-info">
+            <strong>Location:</strong> {{ weather.city.name }}, {{ weather.city.country }}
+            <br>
+            <strong>Coordinates:</strong> {{ "%.4f"|format(weather.city.coord.lat) }}, {{ "%.4f"|format(weather.city.coord.lon) }}
+        </div>
+
+        {% if daily_forecasts %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Temperature (°C)</th>
+                    <th>Precipitation (mm)</th>
+                    <th>Description</th>
+                    <th>Sunshine Hours</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for day in daily_forecasts %}
+                <tr>
+                    <td><strong>{{ day.date }}</strong></td>
+                    <td class="temperature">{{ day.temperature }}</td>
+                    <td class="precipitation">{{ day.precipitation }}</td>
+                    <td>{{ day.description }}</td>
+                    <td class="sunshine">{{ day.sunshine_hours }}</td>
+                    <td class="notes">{{ day.notes }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div style="text-align: center; color: #e74c3c; margin: 20px 0;">
+            <p>No forecast data available.</p>
+        </div>
+        {% endif %}
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+            <h3>Legend:</h3>
+            <ul style="color: #666;">
+                <li><strong>Temperature:</strong> High/Low temperatures for the day in Celsius</li>
+                <li><strong>Precipitation:</strong> Total rainfall and snowfall for the day in millimeters</li>
+                <li><strong>Sunshine Hours:</strong> Estimated based on cloud coverage (12-hour daylight assumption)</li>
+                <li><strong>Notes:</strong> Information about data completeness and any missing readings</li>
+            </ul>
+        </div>
+
+        <a href="/" class="back-link">← Back to Search</a>
+    </div>
+</body>
+</html>
